@@ -17,18 +17,19 @@
 
 defined('ABSPATH')||exit;
 add_action('admin_menu','plugin_menu');
+
 function plugin_menu(){
     add_menu_page('Movie','Movie','manage_options','User-options','Userprocess',$icon_url ='dashicons-menu',65);
     add_submenu_page('User-options','Dashboard','Dashboard','manage_options','settings','add_new_funct');
     add_submenu_page('User-options','settings','settings','manage_options','settings','setting_func');
 }
 function Userprocess(){
-   //
+   //TODO: operate some task
 }
 
 function add_new_funct(){
-   //
+    //TODO: operate some task
 }
 function setting_func(){
-    //
+     //TODO: operate some task
 }
