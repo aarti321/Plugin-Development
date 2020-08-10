@@ -19,7 +19,10 @@
  
 /**
  * custom option and settings
+ * 
+ * 
  */
+
 function wporg_settings_init() {
  // register a new setting for "wporg" page
  register_setting( 'wporg', 'wporg_options' );
@@ -46,6 +49,64 @@ function wporg_settings_init() {
  'wporg_custom_data' => 'custom',
  ]
  );
+
+ add_settings_field(
+    'wporg_field_checkbox', 
+    
+    __( 'Checkbox', 'wporg' ),
+    'wporg_field_pill_cbc',
+    'wporg',
+    'wporg_section_developers',
+    [
+    'label_for' => 'wporg_field_checkbox',
+    'class' => 'wporg_row',
+    'wporg_custom_data' => 'custom',
+    ]
+    );
+
+    add_settings_field(
+        'wporg_field_Radio', 
+        
+        __( 'Radio', 'wporg' ),
+        'wporg_field_pill_radio',
+        'wporg',
+        'wporg_section_developers',
+        [
+        'label_for' => 'wporg_field_radio',
+        'class' => 'wporg_row',
+        'wporg_custom_data' => 'custom',
+        ]
+        );
+
+        add_settings_field(
+            'wporg_field_textarea', 
+            
+            __( 'Textarea', 'wporg' ),
+            'wporg_field_pill_textarea',
+            'wporg',
+            'wporg_section_developers',
+            [
+            'label_for' => 'wporg_field_textarea',
+            'class' => 'wporg_row',
+            'wporg_custom_data' => 'custom',
+            ]
+            );
+
+            add_settings_field(
+                'wporg_field_drop', 
+                
+                __( 'Textarea', 'wporg' ),
+                'wporg_field_pill_dropdown',
+                'wporg',
+                'wporg_section_developers',
+                [
+                'label_for' => 'wporg_field_dropdown',
+                'class' => 'wporg_row',
+                'wporg_custom_data' => 'custom',
+                ]
+                );
+
+ 
 }
  
 /**
@@ -53,54 +114,70 @@ function wporg_settings_init() {
  */
 add_action( 'admin_init', 'wporg_settings_init' );
  
-/**
- * custom option and settings:
- * callback functions
- */
- 
-// developers section cb
- 
-// section callbacks can accept an $args parameter, which is an array.
-// $args have the following keys defined: title, id, callback.
-// the values are defined at the add_settings_section() function.
-function wporg_section_developers_cb( $args ) {
- ?>
- <p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'Follow the white rabbit.', 'wporg' ); ?></p>
- <?php
+
+
+
+function wporg_section_developers_cb(){
+    echo "hello";
 }
- 
-// pill field cb
- 
-// field callbacks can accept an $args parameter, which is an array.
-// $args is defined at the add_settings_field() function.
-// wordpress has magic interaction with the following keys: label_for, class.
-// the "label_for" key value is used for the "for" attribute of the <label>.
-// the "class" key value is used for the "class" attribute of the <tr> containing the field.
-// you can add custom key value pairs to be used inside your callbacks.
-function wporg_field_pill_cb( $args ) {
- // get the value of the setting we've registered with register_setting()
- $options = get_option( 'wporg_options' );
- // output the field
- ?>
- <select id="<?php echo esc_attr( $args['label_for'] ); ?>"
- data-custom="<?php echo esc_attr( $args['wporg_custom_data'] ); ?>"
- name="wporg_options[<?php echo esc_attr( $args['label_for'] ); ?>]"
- >
- <option value="red" <?php echo isset( $options[ $args['label_for'] ] ) ? ( selected( $options[ $args['label_for'] ], 'red', false ) ) : ( '' ); ?>>
- <?php esc_html_e( 'red pill', 'wporg' ); ?>
- </option>
- <option value="blue" <?php echo isset( $options[ $args['label_for'] ] ) ? ( selected( $options[ $args['label_for'] ], 'blue', false ) ) : ( '' ); ?>>
- <?php esc_html_e( 'blue pill', 'wporg' ); ?>
- </option>
- </select>
- <p class="description">
- <?php esc_html_e( 'You take the blue pill and the story ends. You wake in your bed and you believe whatever you want to believe.', 'wporg' ); ?>
- </p>
- <p class="description">
- <?php esc_html_e( 'You take the red pill and you stay in Wonderland and I show you how deep the rabbit-hole goes.', 'wporg' ); ?>
- </p>
+function wporg_field_pill_cb() {
+      ?>
+ <input type="text" name="wporg_setting_name" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
  <?php
+
+
+//next function
+ function wporg_field_pill_cbc()
+ {
+                ?>
+                
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="materialUnchecked">
+                    <label class="form-check-label" for="materialUnchecked">Material unchecked</label>
+                </div>
+            <?php       
+ }
+
+ function wporg_field_pill_radio(){
+    ?>
+    <input type="radio" id="1" name="size" value="5">
+    <label for="size">Size</label><br>
+    <input type="radio" id="2" name="size" value="6">
+    <label for="medium">Medium </label><br>
+    <?php
+ }
+
+
+ function wporg_field_pill_textarea(){
+    ?>
+    <div class="form-group">
+      
+      <textarea class="form-control rounded-0" id="exampleFormControlTextarea2" rows="3"></textarea>
+  </div>
+
+      <?php
+   }
+
+   function wporg_field_pill_dropdown()
+    {
+        ?>
+        <label for="cars">Choose a car:</label>
+
+        <select name="cars" id="cars">
+        <option value="volvo">Volvo</option>
+        <option value="saab">Saab</option>
+        <option value="mercedes">Mercedes</option>
+        <option value="audi">Audi</option>
+        </select>
+
+        <?php
+
+    }
+
+
 }
+
+
  
 /**
  * top level menu
@@ -108,11 +185,11 @@ function wporg_field_pill_cb( $args ) {
 function wporg_options_page() {
  // add top level menu page
  add_menu_page(
- 'WPOrg',
- 'WPOrg Options',
- 'manage_options',
- 'wporg',
- 'wporg_options_page_html'
+ 'WPOrg',//title
+ 'WPOrg Options',//menu name
+ 'manage_options',//capability
+ 'wporg',//menu slug
+ 'wporg_options_page_html'//callbackfunction
  );
 }
  
