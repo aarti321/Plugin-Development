@@ -27,10 +27,10 @@ function wporg_settings_init()
  
     // register a new section in the "reading" page
     add_settings_section(
-        'settings_section',
-        'Settings Section',
-        'wporg_settings_section_cb',
-        'reading'
+        'settings_section',//id
+        'Settings Section',//field
+        'wporg_settings_section_cb',//callable func
+        'reading'//page
     );
  
     // register a new field in the "wporg_settings_section" section, inside the "reading" page

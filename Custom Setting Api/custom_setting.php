@@ -23,28 +23,28 @@
  * 
  */
 
-function wporg_settings_init() {
- // register a new setting for "wporg" page
+function my_settings_init() {
+ 
  register_setting( 'wporg', 'wporg_options' );
  
  // register a new section in the "wporg" page
  add_settings_section(
- 'wporg_section_developers',
- __( 'The Matrix has you.', 'wporg' ),
- 'wporg_section_developers_cb',
- 'wporg'
+ 'my_section_developers',//id
+ __( 'My customized settings', 'wporg' ),//title
+ 'wporg_section_developers_function1',//callable fun
+ 'wporg'//page
  );
  
  // register a new field in the "wporg_section_developers" section, inside the "wporg" page
  add_settings_field(
- 'wporg_field_pill', // as of WP 4.6 this value is used only internally
+ 'input_field', 
  // use $args' label_for to populate the id inside the callback
- __( 'Pill', 'wporg' ),
- 'wporg_field_pill_cb',
+ __( 'Input Field', 'wporg' ),
+ 'wporg_field_pill_function2',
  'wporg',
- 'wporg_section_developers',
+ 'my_section_developers',
  [
- 'label_for' => 'wporg_field_pill',
+ 'label_for' => 'input_field',
  'class' => 'wporg_row',
  'wporg_custom_data' => 'custom',
  ]
@@ -54,9 +54,9 @@ function wporg_settings_init() {
     'wporg_field_checkbox', 
     
     __( 'Checkbox', 'wporg' ),
-    'wporg_field_pill_cbc',
+    'wporg_field_pill_function3',
     'wporg',
-    'wporg_section_developers',
+    'my_section_developers',
     [
     'label_for' => 'wporg_field_checkbox',
     'class' => 'wporg_row',
@@ -70,7 +70,7 @@ function wporg_settings_init() {
         __( 'Radio', 'wporg' ),
         'wporg_field_pill_radio',
         'wporg',
-        'wporg_section_developers',
+        'my_section_developers',
         [
         'label_for' => 'wporg_field_radio',
         'class' => 'wporg_row',
@@ -84,7 +84,7 @@ function wporg_settings_init() {
             __( 'Textarea', 'wporg' ),
             'wporg_field_pill_textarea',
             'wporg',
-            'wporg_section_developers',
+            'my_section_developers',
             [
             'label_for' => 'wporg_field_textarea',
             'class' => 'wporg_row',
@@ -98,7 +98,7 @@ function wporg_settings_init() {
                 __( 'Textarea', 'wporg' ),
                 'wporg_field_pill_dropdown',
                 'wporg',
-                'wporg_section_developers',
+                'my_section_developers',
                 [
                 'label_for' => 'wporg_field_dropdown',
                 'class' => 'wporg_row',
@@ -109,25 +109,24 @@ function wporg_settings_init() {
  
 }
  
-/**
- * register our wporg_settings_init to the admin_init action hook
- */
-add_action( 'admin_init', 'wporg_settings_init' );
+//register admin init hook
+add_action( 'admin_init', 'my_settings_init' );
  
 
+//callable functions
 
-
-function wporg_section_developers_cb(){
+function wporg_section_developers_function1(){
     echo "hello";
 }
-function wporg_field_pill_cb() {
+function wporg_field_pill_function2() {
       ?>
  <input type="text" name="wporg_setting_name" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
+ 
  <?php
 
 
 //next function
- function wporg_field_pill_cbc()
+ function wporg_field_pill_function3()
  {
                 ?>
                 
@@ -152,7 +151,7 @@ function wporg_field_pill_cb() {
     ?>
     <div class="form-group">
       
-      <textarea class="form-control rounded-0" id="exampleFormControlTextarea2" rows="3"></textarea>
+      <textarea class="form-control rounded-0" id="example" rows="3"></textarea>
   </div>
 
       <?php
@@ -179,14 +178,12 @@ function wporg_field_pill_cb() {
 
 
  
-/**
- * top level menu
- */
+//adding top level menus
 function wporg_options_page() {
  // add top level menu page
  add_menu_page(
- 'WPOrg',//title
- 'WPOrg Options',//menu name
+ 'Settings',//title
+ 'Setting Options',//menu name
  'manage_options',//capability
  'wporg',//menu slug
  'wporg_options_page_html'//callbackfunction
@@ -197,32 +194,40 @@ function wporg_options_page() {
  * register our wporg_options_page to the admin_menu action hook
  */
 add_action( 'admin_menu', 'wporg_options_page' );
+add_action( 'admin_init', 'setting_details' ) ;
  
-/**
- * top level menu:
- * callback functions
- */
+//callback functions for setting details
+
+ function setting_details(){
+    if(isset($_POST['Mysubmit'])){
+        $array_details = array(
+            'wporg_setting_name'=> isset($_POST['wporg_setting_name']) ? sanitize_text_field($_POST['wporg_setting_name']): "Default",
+             'materialUnchecked'=> isset($_POST['materialUnchecked']) ? absint($_POST['materialUnchecked']): "Default",
+            'size'=> isset($_POST['size']) ? sanitize_text_field($_POST['size']): "Default",
+            'cars'=> isset($_POST['cars']) ? sanitize_text_field($_POST['cars']): "Default",
+             'example'=> isset($_POST['example']) ? sanitize_textarea_field($_POST['example']): "Default",
+        );
+        if(!empty($array_details)){
+            update_option('my_option_name', $array_details);
+        }
+    }
+ }
 function wporg_options_page_html() {
- // check user capabilities
+ 
+
+
+ 
+ 
+ 
+    // check user capabilities
  if ( ! current_user_can( 'manage_options' ) ) {
  return;
  }
  
- // add error/update messages
- 
- // check if the user have submitted the settings
- // wordpress will add the "settings-updated" $_GET parameter to the url
- if ( isset( $_GET['settings-updated'] ) ) {
- // add settings saved message with the class of "updated"
- add_settings_error( 'wporg_messages', 'wporg_message', __( 'Settings Saved', 'wporg' ), 'updated' );
- }
- 
- // show error/update messages
- settings_errors( 'wporg_messages' );
+
  ?>
- <div class="wrap">
- <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
- <form action="options.php" method="post">
+ 
+ <form method="post">
  <?php
  // output security fields for the registered setting "wporg"
  settings_fields( 'wporg' );
@@ -230,8 +235,9 @@ function wporg_options_page_html() {
  // (sections are registered for "wporg", each field is registered to a specific section)
  do_settings_sections( 'wporg' );
  // output save settings button
- submit_button( 'Save Settings' );
+ 
  ?>
+ <input type ="submit" name="Mysubmit" value="save settings">
  </form>
  </div>
  <?php
