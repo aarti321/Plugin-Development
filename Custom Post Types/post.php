@@ -53,12 +53,28 @@ function movies_box() {
         'high'//priority
     );
 }
-function movie_box_content( $post ) {
+function movie_box_content($post ) {
 
+    $var = get_post_meta( $post->ID, 'Movie_info');
+  
     echo '<label for="movies"></label>';
-    echo '<input type="date" id="movie" name="movie_name" placeholder="Movie Released Date" />';
+    echo '<input type="date" id="movie" name="movie_date" value="'. $var['0']['movie_date'] .'" placeholder="Movie Released Date" />';
     echo '<label for="movies"></label>';
-    echo '<input type="text" id="movie" name="movie_name" placeholder="Writer" />';
+    echo '<input type="text" id="movie" name="movie_writer" value="'. $var['0']['movie_writer'] .'"  placeholder="Writer" />';
     echo '<label for="movie"></label>';
-    echo '<input type="text" id="movie" name="movie_name" placeholder="cast" />';
+    echo '<input type="text" id="movie" name="movie_cast"value="'. $var['0']['movie_cast'] .'"placeholder="cast" />';
+
+  
   }
+
+  add_action( 'save_post', 'Details_save' );
+function Details_save( $post_id ) {
+
+  $array_details = array(
+    'movie_date'=> $_POST['movie_date'] ,
+    'movie_writer'=>$_POST['movie_writer'] ,
+    'movie_cast'=> $_POST['movie_cast'] ,
+     
+);
+  update_post_meta( $post_id, 'Movie_info', $array_details );
+}
