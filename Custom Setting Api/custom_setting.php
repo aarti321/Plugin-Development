@@ -64,7 +64,7 @@ function my_settings_init() {
     ]
     );
 
-    add_settings_field(
+ add_settings_field(
         'wporg_field_Radio', 
         
         __( 'Radio', 'wporg' ),
@@ -76,35 +76,35 @@ function my_settings_init() {
         'class' => 'wporg_row',
         'wporg_custom_data' => 'custom',
         ]
-        );
+    );
 
-        add_settings_field(
-            'wporg_field_textarea', 
+ add_settings_field(
+     'wporg_field_textarea', 
             
-            __( 'Textarea', 'wporg' ),
-            'wporg_field_pill_textarea',
-            'wporg',
-            'my_section_developers',
-            [
-            'label_for' => 'wporg_field_textarea',
-            'class' => 'wporg_row',
-            'wporg_custom_data' => 'custom',
-            ]
-            );
+     __( 'Textarea', 'wporg' ),
+     'wporg_field_pill_textarea',
+     'wporg',
+     'my_section_developers',
+     [
+     'label_for' => 'wporg_field_textarea',
+     'class' => 'wporg_row',
+     'wporg_custom_data' => 'custom',
+     ]
+    );
 
-            add_settings_field(
-                'wporg_field_drop', 
-                
-                __( 'Textarea', 'wporg' ),
-                'wporg_field_pill_dropdown',
-                'wporg',
-                'my_section_developers',
-                [
-                'label_for' => 'wporg_field_dropdown',
-                'class' => 'wporg_row',
-                'wporg_custom_data' => 'custom',
-                ]
-                );
+ add_settings_field(
+    'wporg_field_drop', 
+     
+    __( 'Textarea', 'wporg' ),
+    'wporg_field_pill_dropdown',
+    'wporg',
+    'my_section_developers',
+    [
+    'label_for' => 'wporg_field_dropdown',
+    'class' => 'wporg_row',
+    'wporg_custom_data' => 'custom',
+    ]
+     );
 
  
 }
@@ -118,26 +118,27 @@ add_action( 'admin_init', 'my_settings_init' );
 function wporg_section_developers_function1(){
     echo "hello";
 }
-function wporg_field_pill_function2() {
-      ?>
- <input type="text" name="wporg_setting_name" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
- 
- <?php
-
-
-//next function
- function wporg_field_pill_function3()
+function wporg_field_pill_function2()
  {
-                ?>
-                
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="materialUnchecked">
-                    <label class="form-check-label" for="materialUnchecked">Material unchecked</label>
-                </div>
-            <?php       
- }
+    ?>
+        <input type="text" name="wporg_setting_name" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
+    
+    <?php
 
- function wporg_field_pill_radio(){
+}
+
+function wporg_field_pill_function3()
+    {
+    ?>
+                    
+        <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="materialUnchecked">
+                <label class="form-check-label" for="materialUnchecked">Material unchecked</label>
+        </div>
+    <?php       
+    }
+function wporg_field_pill_radio()
+ {
     ?>
     <input type="radio" id="1" name="size" value="5">
     <label for="size">Size</label><br>
@@ -147,17 +148,18 @@ function wporg_field_pill_function2() {
  }
 
 
- function wporg_field_pill_textarea(){
-    ?>
-    <div class="form-group">
-      
-      <textarea class="form-control rounded-0" id="example" rows="3"></textarea>
-  </div>
+function wporg_field_pill_textarea()
+    {
+        ?>
+        <div class="form-group">
+        
+        <textarea class="form-control rounded-0" id="example" rows="3"></textarea>
+    </div>
 
-      <?php
-   }
+        <?php
+    }
 
-   function wporg_field_pill_dropdown()
+function wporg_field_pill_dropdown()
     {
         ?>
         <label for="cars">Choose a car:</label>
@@ -172,9 +174,6 @@ function wporg_field_pill_function2() {
         <?php
 
     }
-
-
-}
 
 
  
@@ -213,32 +212,26 @@ add_action( 'admin_init', 'setting_details' ) ;
     }
  }
 function wporg_options_page_html() {
- 
+        // check user capabilities
+    if ( ! current_user_can( 'manage_options' ) ) {
+    return;
+    }
+    
 
-
- 
- 
- 
-    // check user capabilities
- if ( ! current_user_can( 'manage_options' ) ) {
- return;
- }
- 
-
- ?>
- 
- <form method="post">
- <?php
- // output security fields for the registered setting "wporg"
- settings_fields( 'wporg' );
- // output setting sections and their fields
- // (sections are registered for "wporg", each field is registered to a specific section)
- do_settings_sections( 'wporg' );
- // output save settings button
- 
- ?>
- <input type ="submit" name="Mysubmit" value="save settings">
- </form>
- </div>
- <?php
+    ?>
+    
+    <form method="post">
+    <?php
+    // output security fields for the registered setting "wporg"
+    settings_fields( 'wporg' );
+    // output setting sections and their fields
+    // (sections are registered for "wporg", each field is registered to a specific section)
+    do_settings_sections( 'wporg' );
+    // output save settings button
+    
+    ?>
+    <input type ="submit" name="Mysubmit" value="save settings">
+    </form>
+    </div>
+    <?php
 }

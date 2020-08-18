@@ -15,8 +15,16 @@
  * 
  */
 defined('ABSPATH') or die();
-add_action( 'init', 'Custom_post_type' );
-function Custom_post_type() {
+
+class PostType{
+  function __construct(){
+    add_action( 'init', array($this,'Custom_post_type' ));
+    add_action( 'add_meta_boxes',array($this, 'movies_box' ));
+    add_action( 'save_post', array($this,'Details_save' ));
+
+  }
+
+  function Custom_post_type() {
     $labels = array(
       'name'               => _x( 'Movies', 'post type general name' ),
       'singular_name'      => _x( 'Movies', 'post type singular name' ),
@@ -41,19 +49,20 @@ function Custom_post_type() {
     );
     register_post_type( 'movie', $args ); 
   }
-
-  add_action( 'add_meta_boxes', 'movies_box' );
-function movies_box() {
+  function movies_box() {
     add_meta_box( 
         'movies_box',//id
          'movies',//title
-        'movie_box_content',//callback
+       array($this,'movie_box_content') ,//callback
         'movie', //same as in register_post_type id
         'normal',//context
         'high'//priority
     );
-}
-function movie_box_content($post ) {
+  
+  
+  }
+
+  function movie_box_content($post ) {
 
     $var = get_post_meta( $post->ID, 'Movie_info');
   
@@ -66,8 +75,7 @@ function movie_box_content($post ) {
 
   
   }
-
-  add_action( 'save_post', 'Details_save' );
+    
 function Details_save( $post_id ) {
 
   $array_details = array(
@@ -75,6 +83,14 @@ function Details_save( $post_id ) {
     'movie_writer'=>$_POST['movie_writer'] ,
     'movie_cast'=> $_POST['movie_cast'] ,
      
-);
+    );
+  
   update_post_meta( $post_id, 'Movie_info', $array_details );
 }
+}
+new PostType();//object initialization
+
+  
+
+
+

@@ -37,13 +37,13 @@
     }
      //wp_enqueue_style( string $handle, string $src = '', string[] $deps = array(), string|bool|null $ver = false, string $media = 'all' )
     function enqueue() {
-        wp_enqueue_style ('mypluginstyle',plugins_url('/assests/style.css',__FILE__));
-        wp_enqueue_script ('mypluginscript',plugins_url('/assests/myscript.s',__FILE__));
+        wp_enqueue_style ('mypluginstyle',plugins_url('/assests/style.css', __FILE__));
+        wp_enqueue_script ('mypluginscript',plugins_url('/assests/myscript.js',__FILE__));
     }
  }
 
  if ( class_exists( 'PracticePlugin') ){
-     $practicePlugin = new PracticePlugin ();
+     $practicePlugin = new PracticePlugin ();//initilazation
      $practicePlugin->register();
  }
 
