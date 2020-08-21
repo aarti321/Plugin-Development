@@ -64,14 +64,14 @@ function vb_register_user_scripts() {
     $new_user_name = stripcslashes($_POST['new_user_name']);
     $new_user_email = stripcslashes($_POST['new_user_email']);
     $new_user_password = $_POST['new_user_password'];
-    $user_nice_name = strtolower($_POST['new_user_email']);
-    error_log($new_user_name);
+   
+  
     $user_data = array(
         'user_login' => $new_user_name,
         'user_email' => $new_user_email,
         'user_pass' => $new_user_password,
         'user_nicename' => $user_nice_name,
-        'display_name' => $new_user_first_name,
+        
         'role' => 'subscriber'
         );
     $user_id = wp_insert_user($user_data);

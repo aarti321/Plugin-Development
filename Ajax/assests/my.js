@@ -5,10 +5,10 @@ jQuery(document).ready(function($) {
         var newUserName = jQuery('#new-username').val();
         var newUserEmail = jQuery('#new-useremail').val();
         var newUserPassword = jQuery('#new-userpassword').val();
-        console.log(newUserName);
+       
         jQuery.ajax({
           type:"POST",
-          url:"<?php echo admin_url('admin-ajax.php'); ?>",
+          url:my_vars.my_ajax_url,
           data: {
             action: "register_user_front_end",
             new_user_name : newUserName,
